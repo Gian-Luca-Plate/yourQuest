@@ -1,11 +1,14 @@
- <script>
+<script>
 import { animate, stagger } from "motion";
+import Chart from "chart.js";
+import planetChartData from "./data.chart/planet-data";
 export default {
   name: "Stat",
   data() {
     return {
       icon1: false,
       totalPushUps: 0,
+      planetChartData: planetChartData,
     };
   },
   created() {
@@ -30,6 +33,10 @@ export default {
         );
       }
     },
+  },
+  mounted() {
+    const ctx = document.getElementById("chart");
+    new Chart(ctx, this.planetChartData);
   },
 };
 </script>
@@ -62,7 +69,8 @@ export default {
         </ul>
       </nav>
     </div>
-    {{ totalPushUps }}
+      <canvas id="chart"></canvas>
+    
   </div>
 </template>
 
@@ -70,6 +78,11 @@ export default {
 <style scope>
 * {
   background-color: rgb(41, 41, 41);
+}
+#chart{
+  background-color: #333;
+  margin-top: 350px;
+  height: 200px;
 }
 .bottom-navbar {
   position: fixed;
