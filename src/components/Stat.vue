@@ -1,6 +1,6 @@
 <script>
 import { animate, stagger } from "motion";
-import { Chart } from 'chart.js';
+import { Chart } from "chart.js";
 import planetChartData from "./data.chart/planet-data";
 
 export default {
@@ -29,10 +29,14 @@ export default {
       const sitUpsData = localStorage.getItem("Totalsitups")
         ? JSON.parse(localStorage.getItem("Totalsitups"))
         : [0, 0, 0, 0, 0, 0, 0]; // Standardmäßig 0 für jede Woche
+      const squatsData = localStorage.getItem("Totalsquats")
+        ? JSON.parse(localStorage.getItem("Totalsquats"))
+        : [0, 0, 0, 0, 0, 0, 0]; // Standardmäßig 0 für jede Woche
 
       // Aktualisiere die Daten des Charts mit den Push-Up- und Sit-Up-Werten
       this.planetChartData.data.datasets[0].data = pushUpsData; // Push-Ups-Daten
-      this.planetChartData.data.datasets[1].data = sitUpsData;  // Sit-Ups-Daten
+      this.planetChartData.data.datasets[1].data = sitUpsData;
+      this.planetChartData.data.datasets[2].data = squatsData; // Sit-Ups-Daten
 
       // Erstelle den Chart
       const ctx = document.getElementById("chart").getContext("2d");

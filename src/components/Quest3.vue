@@ -6,14 +6,18 @@ export default {
   data() {
     return {
       icon1: false,
-      squatsValue: localStorage.getItem("squats")
+      SquatValue: localStorage.getItem("squats")
         ? parseInt(localStorage.getItem("squats"), 10)
-        : 0,
-      totalsquatss: localStorage.getItem("Totalsquats")
-        ? parseInt(localStorage.getItem("Totalsquats"), 10)
         : 0,
       lastDay: localStorage.getItem("lastDay"),
       currentDay: "",
+      MoSquats: localStorage.getItem("MoSquats"),
+      DiSquats: localStorage.getItem("DiSquats"),
+      MiSquats: localStorage.getItem("MiSquats"),
+      DoSquats: localStorage.getItem("DoSquats"),
+      FrSquats: localStorage.getItem("FrSquats"),
+      SaSquats: localStorage.getItem("SaSquats"),
+      SoSquats: localStorage.getItem("SoSquats"),
     };
   },
   created() {
@@ -21,7 +25,8 @@ export default {
     if (this.currentDay === this.lastDay) {
       return;
     } else {
-      localStorage.setItem("squats", 0);
+      localStorage.setItem("squat", 0);
+      this.checkDaySquats();
     }
   },
   methods: {
@@ -31,10 +36,92 @@ export default {
       const currentDayIndex = new Date().getDay();
       this.currentDay = days[currentDayIndex];
     },
-
-    increasesquatsValue() {
-      this.squatsValue += 10;
-      localStorage.setItem("squats", this.squatsValue);
+    checkDaySquats() {
+      if (this.currentDay === "Mo") {
+        localStorage.setItem("MoSquats", this.SquatValue);
+        localStorage.setItem(
+          "Totalsquats",
+          JSON.stringify([
+            this.SquatValue,
+            this.DiSquats,
+            this.MiSquats,
+            this.DoSquats,
+            this.FrSquats,
+            this.SaSquats,
+            this.SoSquats,
+          ])
+        );
+      }
+      if (this.currentDay === "Di") {
+        localStorage.setItem("DiSquats", this.SquatValue);
+        localStorage.setItem(
+          "Totalsquats",
+          JSON.stringify([
+            this.MoSquats,
+            this.SquatValue,
+            this.MiSquats,
+            this.DoSquats,
+            this.FrSquats,
+            this.SaSquats,
+            this.SoSquats,
+          ])
+        );
+      }
+      if (this.currentDay === "Mi") {
+        localStorage.setItem("MiSquats", this.SquatValue);
+        localStorage.setItem(
+          "Totalsquats",
+          JSON.stringify([
+            this.MoSquats,
+            this.DiSquats,
+            this.SquatValue,
+            this.DoSquats,
+            this.FrSquats,
+            this.SaSquats,
+            this.SoSquats,
+          ])
+        );
+      }
+      if (this.currentDay === "Do") {
+        localStorage.setItem("DoSquats", this.SquatValue);
+        localStorage.setItem(
+          "Totalsquats",
+          JSON.stringify([
+            this.MoSquats,
+            this.DiSquats,
+            this.MiSquats,
+            this.SquatValue,
+            this.FrSquats,
+            this.SaSquats,
+            this.SoSquats,
+          ])
+        );
+      }
+      if (this.currentDay === "Fr") {
+        localStorage.setItem("FrSquats", this.SquatValue);
+        localStorage.setItem(
+          "Totalsquats",
+          JSON.stringify([
+            this.MoSquats,
+            this.DiSquats,
+            this.MiSquats,
+            this.SquatValue,
+            this.FrSquats,
+            this.SaSquats,
+            this.SoSquats,
+          ])
+        );
+      }
+    },
+    increaseSquatValue() {
+      if (this.SquatValue < 200) {
+        this.SquatValue += 10;
+        localStorage.setItem("squats", this.SquatValue);
+        this.checkDaySquats();
+        localStorage.setItem("lastDay", this.currentDay);
+      } else {
+        this.lastDay = this.currentDay;
+      }
     },
   },
   watch: {
@@ -53,25 +140,10 @@ export default {
         );
       }
     },
-    squatsValue(newVal) {
-      if (newVal > 200) {
-        alert("Du hast 200 Push Ups geschafft 🥳");
-        this.squatsValue = 200;
-        localStorage.setItem("squats", 200);
-        localStorage.setItem("lastDay", this.currentDay);
-      }
-      if (newVal === 200) {
-        alert("Du hast 200 Push Ups geschafft 🥳");
-        this.squatsValue = 200;
-        this.totalsquatss += 200;
-        localStorage.setItem("squats", 200);
-        localStorage.setItem("lastDay", this.currentDay);
-        localStorage.setItem("Totalsquats", this.totalsquatss);
-      }
-    },
   },
 };
 </script>
+
 <template>
   <div id="quest1">
     <!-- Flexbox Container für das Layout -->
@@ -81,31 +153,25 @@ export default {
       <div class="slider-container">
         <input
           type="range"
-          :value="squatsValue"
+          :value="SquatValue"
           disabled
           min="0"
           max="200"
           class="slider"
         />
-        <div class="slider-value">{{ squatsValue }}/200</div>
+        <div class="slider-value">{{ SquatValue }}/200</div>
       </div>
       <!-- Button -->
-      <button class="yellow-button" @click="increasesquatsValue">+10</button>
+      <button class="yellow-button" @click="increaseSquatValue">+10</button>
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 * {
   background-color: rgb(41, 41, 41);
 }
-* {
-  background-color: rgb(41, 41, 41);
-}
 
-/* Container für Flexbox-Layout */
 .container {
   display: flex;
   flex-direction: column;
@@ -120,23 +186,20 @@ export default {
   padding: 20px;
 }
 
-/* Zentrierte Überschrift */
 h2 {
   text-align: center;
   margin: 0;
   background-color: #333;
 }
 
-/* Flexbox-Container für Slider und Wert */
 .slider-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #333; /* Gleicher Hintergrund für beide Elemente */
+  background-color: #333;
   border-radius: 10px;
 }
 
-/* Slider kleiner und schmaler machen */
 .slider {
   -webkit-appearance: none;
   width: 120px;
@@ -170,17 +233,15 @@ h2 {
   cursor: pointer;
 }
 
-/* Anzeige des Slider-Wertes direkt neben dem Slider */
 .slider-value {
   margin-left: 10px;
   font-size: 16px;
   color: #c5c0c0;
-  background-color: #333; /* Gleicher Hintergrund */
+  background-color: #333;
   padding: 5px 10px;
   border-radius: 8px;
 }
 
-/* Gelber Button mit schwarzer Schrift */
 .yellow-button {
   background-color: yellow;
   color: black;

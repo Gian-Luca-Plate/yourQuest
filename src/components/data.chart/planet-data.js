@@ -12,13 +12,21 @@ export const planetChartData = {
         pointHoverRadius: 15,
       },
       {
-        label: "sit Ups",
+        label: "Sit Ups",
         data: [],
         borderColor: "rgb(255,255,0)",
         pointStyle: 'circle',
         pointRadius: 10,
         pointHoverRadius: 15,
       },
+      {
+        label: "Squats",
+        data: [],
+        borderColor: "rgb(255,40,250)",
+        pointStyle: 'circle',
+        pointRadius: 10,
+        pointHoverRadius: 15,
+      }
     ],
   },
   options: {
