@@ -9,19 +9,24 @@ export default {
       PushUpValue: localStorage.getItem("pushup")
         ? parseInt(localStorage.getItem("pushup"), 10)
         : 0,
-      totalPushUps: localStorage.getItem("Totalpushup")
-        ? parseInt(localStorage.getItem("Totalpushup"), 10)
-        : 0,
       lastDay: localStorage.getItem("lastDay"),
       currentDay: "",
+      MopuschUps: localStorage.getItem("MopuschUps"),
+      DipuschUps: localStorage.getItem("DipuschUps"),
+      MipuschUps: localStorage.getItem("MipuschUps"),
+      DopuschUps: localStorage.getItem("DopuschUps"),
+      FrpuschUps: localStorage.getItem("FepuschUps"),
+      SapuschUps: localStorage.getItem("SapuschUps"),
+      SopuschUps: localStorage.getItem("SopuschUps"),
     };
   },
   created() {
     this.checkDay();
     if (this.currentDay === this.lastDay) {
-      return;
+      return
     } else {
       localStorage.setItem("pushup", 0);
+       this.chekDayPuschups();
     }
   },
   methods: {
@@ -31,10 +36,91 @@ export default {
       const currentDayIndex = new Date().getDay();
       this.currentDay = days[currentDayIndex];
     },
-
+    chekDayPuschups() {
+      if (this.currentDay === "Mo") {
+        localStorage.setItem("MopuschUps" ,this.PushUpValue )
+        localStorage.setItem(
+          "Totalpushups",
+          JSON.stringify([
+            this.PushUpValue,
+            this.DipuschUps,
+            this.MipuschUps,
+            this.DopuschUps,
+            this.FrpuschUps,
+            this.SapuschUps,
+            this.SopuschUps,
+          ])
+        );
+      }
+      if (this.currentDay === "Di") {
+        localStorage.setItem("DipuschUps" ,this.PushUpValue )
+        localStorage.setItem(
+          "Totalpushups",
+          JSON.stringify([
+            this.MopuschUps,
+            this.PushUpValue,
+            this.MipuschUps,
+            this.DopuschUps,
+            this.FrpuschUps,
+            this.SapuschUps,
+            this.SopuschUps,
+          ])
+        );
+      }
+      if (this.currentDay === "Mi") {
+        localStorage.setItem("MipuschUps" ,this.PushUpValue )
+        localStorage.setItem(
+          "Totalpushups",
+          JSON.stringify([
+            this.MopuschUps,
+            this.DipuschUps,
+            this.PushUpValue,
+            this.DopuschUps,
+            this.FrpuschUps,
+            this.SapuschUps,
+            this.SopuschUps,
+          ])
+        );
+      }
+      if (this.currentDay === "Do") {
+        localStorage.setItem("DopuschUps" ,this.PushUpValue )
+        localStorage.setItem(
+          "Totalpushups",
+          JSON.stringify([
+            this.MopuschUps,
+            this.DipuschUps,
+            this.MipuschUps,
+            this.PushUpValue,
+            this.FrpuschUps,
+            this.SapuschUps,
+            this.SopuschUps,
+          ])
+        );
+      }
+      if (this.currentDay === "Fr") {
+        localStorage.setItem("FrpuschUps" ,this.PushUpValue )
+        localStorage.setItem(
+          "Totalpushups",
+          JSON.stringify([
+            this.MopuschUps,
+            this.DipuschUps,
+            this.MipuschUps,
+            this.PushUpValue,
+            this.FrpuschUps,
+            this.SapuschUps,
+            this.SopuschUps,
+          ])
+        );
+      }
+    },
     increasePushUpValue() {
-      this.PushUpValue += 10;
-      localStorage.setItem("pushup", this.PushUpValue);
+      if (this.PushUpValue < 200) {
+        this.PushUpValue += 10;
+        localStorage.setItem("pushup", this.PushUpValue);
+        this.chekDayPuschups();
+      } else {
+        this.lastDay = this.currentDay;
+      }
     },
   },
   watch: {
@@ -51,22 +137,6 @@ export default {
           { y: 0.5 },
           { delay: stagger(0.1), duration: 0.5, easing: [0.22, 0.03, 0.26, 1] }
         );
-      }
-    },
-    PushUpValue(newVal) {
-      if (newVal > 200) {
-        alert("Du hast 200 Push Ups geschafft 🥳");
-        this.PushUpValue = 200;
-        localStorage.setItem("pushup", 200);
-        localStorage.setItem("lastDay", this.currentDay);
-      }
-      if (newVal === 200) {
-        alert("Du hast 200 Push Ups geschafft 🥳");
-        this.PushUpValue = 200;
-        this.totalPushUps += 200;
-        localStorage.setItem("pushup", 200);
-        localStorage.setItem("lastDay", this.currentDay);
-        localStorage.setItem("Totalpushup", this.totalPushUps);
       }
     },
   },

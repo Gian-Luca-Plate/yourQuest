@@ -6,14 +6,18 @@ export default {
   data() {
     return {
       icon1: false,
-      situpsValue: localStorage.getItem("situps")
+      SitUpValue: localStorage.getItem("situps")
         ? parseInt(localStorage.getItem("situps"), 10)
-        : 0,
-      totalsitupss: localStorage.getItem("Totalsitups")
-        ? parseInt(localStorage.getItem("Totalsitups"), 10)
         : 0,
       lastDay: localStorage.getItem("lastDay"),
       currentDay: "",
+      MoSitUps: null, //localStorage.getItem("MopuschUps"),
+      DiSitUps: null, //localStorage.getItem("DipuschUps"),
+      MiSitUps: 200, //localStorage.getItem("MipuschUps"),
+      DoSitUps: 0, //localStorage.getItem("DopuschUps"),
+      FrSitUps: null, //localStorage.getItem("FepuschUps"),
+      SaSitUps: null, //localStorage.getItem("SapuschUps"),
+      SoSitUps: null, //localStorage.getItem("SopuschUps"),
     };
   },
   created() {
@@ -22,6 +26,7 @@ export default {
       return;
     } else {
       localStorage.setItem("situps", 0);
+      this.cheDaysitups();
     }
   },
   methods: {
@@ -31,10 +36,110 @@ export default {
       const currentDayIndex = new Date().getDay();
       this.currentDay = days[currentDayIndex];
     },
+    cheDaysitups() {
+      if (this.currentDay === "Mo") {
+        localStorage.setItem(
+          "Totalsitups",
+          JSON.stringify([
+            this.SitUpValue,
+            this.DiSitUps,
+            this.MiSitUps,
+            this.DoSitUps,
+            this.FrSitUps,
+            this.SaSitUps,
+            this.SoSitUps,
+          ])
+        );
+      } else if (this.currentDay === "Di") {
+        localStorage.setItem(
+          "Totalsitups",
+          JSON.stringify([
+            this.MoSitUps,
+            this.SitUpValue,
+            this.MiSitUps,
+            this.DoSitUps,
+            this.FrSitUps,
+            this.SaSitUps,
+            this.SoSitUps,
+          ])
+        );
+      } else if (this.currentDay === "Mi") {
+        localStorage.setItem(
+          "Totalsitups",
+          JSON.stringify([
+            this.MoSitUps,
+            this.DiSitUps,
+            this.SitUpValue,
+            this.DoSitUps,
+            this.FrSitUps,
+            this.SaSitUps,
+            this.SoSitUps,
+          ])
+        );
+      } else if (this.currentDay === "Do") {
+        localStorage.setItem(
+          "Totalsitups",
+          JSON.stringify([
+            this.MoSitUps,
+            this.DiSitUps,
+            this.MiSitUps,
+            this.SitUpValue,
+            this.FrSitUps,
+            this.SaSitUps,
+            this.SoSitUps,
+          ])
+        );
+      } else if (this.currentDay === "Fr") {
+        localStorage.setItem(
+          "Totalsitups",
+          JSON.stringify([
+            this.MoSitUps,
+            this.DiSitUps,
+            this.MiSitUps,
+            this.SitUpValue,
+            this.FrSitUps,
+            this.SaSitUps,
+            this.SoSitUps,
+          ])
+        );
+      } else if (this.currentDay === "Sa") {
+        localStorage.setItem(
+          "Totalsitups",
+          JSON.stringify([
+            this.MoSitUps,
+            this.DiSitUps,
+            this.MiSitUps,
+            this.DoSitUps,
+            this.FrSitUps,
+            this.SitUpValue,
+            this.SoSitUps,
+          ])
+        );
+      } else if (this.currentDay === "So") {
+        localStorage.setItem(
+          "Totalsitups",
+          JSON.stringify([
+            this.MoSitUps,
+            this.DiSitUps,
+            this.MiSitUps,
+            this.DoSitUps,
+            this.FrSitUps,
+            this.SaSitUps,
+            this.SitUpValue,
+          ])
+        );
+      }
+    },
 
-    increasesitupsValue() {
-      this.situpsValue += 10;
-      localStorage.setItem("situps", this.situpsValue);
+    increaseSitUpValue() {
+      if (this.SitUpValue < 200) {
+        this.SitUpValue += 10;
+        localStorage.setItem("situps", this.SitUpValue);
+        this.cheDaysitups();
+        // Setze die Gesamtanzahl der Sit-Ups für den aktuellen Tag
+      } else {
+        this.lastDay = this.currentDay;
+      }
     },
   },
   watch: {
@@ -53,25 +158,10 @@ export default {
         );
       }
     },
-    situpsValue(newVal) {
-      if (newVal > 200) {
-        alert("Du hast 200 Push Ups geschafft 🥳");
-        this.situpsValue = 200;
-        localStorage.setItem("situps", 200);
-        localStorage.setItem("lastDay", this.currentDay);
-      }
-      if (newVal === 200) {
-        alert("Du hast 200 Push Ups geschafft 🥳");
-        this.situpsValue = 200;
-        this.totalsitupss += 200;
-        localStorage.setItem("situps", 200);
-        localStorage.setItem("lastDay", this.currentDay);
-        localStorage.setItem("Totalsitups", this.totalsitupss);
-      }
-    },
   },
 };
 </script>
+
 <template>
   <div id="quest1">
     <!-- Flexbox Container für das Layout -->
@@ -81,26 +171,21 @@ export default {
       <div class="slider-container">
         <input
           type="range"
-          :value="situpsValue"
+          :value="SitUpValue"
           disabled
           min="0"
           max="200"
           class="slider"
         />
-        <div class="slider-value">{{ situpsValue }}/200</div>
+        <div class="slider-value">{{ SitUpValue }}/200</div>
       </div>
       <!-- Button -->
-      <button class="yellow-button" @click="increasesitupsValue">+10</button>
+      <button class="yellow-button" @click="increaseSitUpValue">+10</button>
     </div>
   </div>
 </template>
 
-
-
 <style scoped>
-* {
-  background-color: rgb(41, 41, 41);
-}
 * {
   background-color: rgb(41, 41, 41);
 }

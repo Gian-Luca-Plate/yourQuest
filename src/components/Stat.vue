@@ -1,45 +1,48 @@
 <script>
 import { animate, stagger } from "motion";
-import Chart from "chart.js";
+import { Chart } from 'chart.js';
 import planetChartData from "./data.chart/planet-data";
+
 export default {
   name: "Stat",
   data() {
     return {
       icon1: false,
       totalPushUps: 0,
-      planetChartData: planetChartData,
+      planetChartData: planetChartData, // PlanetChartData importieren
     };
   },
   created() {
     this.icon1 = true;
+    console.log("created");
     this.totalPushUps = localStorage.getItem("Totalpushup")
       ? parseInt(localStorage.getItem("Totalpushup"), 10)
       : 0;
   },
-  watch: {
-    icon1(newVal) {
-      if (newVal === true) {
-        animate(
-          ".icon1",
-          { y: -20 }, // Zielposition für die Animation
-          { delay: stagger(0.1), duration: 0.5, easing: [0.22, 0.03, 0.26, 1] } // Animationsoptionen
-        );
-      } else {
-        animate(
-          ".icon1",
-          { y: 0.5 }, // Zielposition für die Animation
-          { delay: stagger(0.1), duration: 0.5, easing: [0.22, 0.03, 0.26, 1] } // Animationsoptionen
-        );
-      }
-    },
-  },
   mounted() {
-    const ctx = document.getElementById("chart");
-    new Chart(ctx, this.planetChartData);
+    this.$nextTick(() => {
+      // Hol die Push-Up- und Sit-Up-Werte aus localStorage (falls vorhanden)
+      const pushUpsData = localStorage.getItem("Totalpushups")
+        ? JSON.parse(localStorage.getItem("Totalpushups"))
+        : [0, 0, 0, 0, 0, 0, 0]; // Standardmäßig 0 für jede Woche
+
+      const sitUpsData = localStorage.getItem("Totalsitups")
+        ? JSON.parse(localStorage.getItem("Totalsitups"))
+        : [0, 0, 0, 0, 0, 0, 0]; // Standardmäßig 0 für jede Woche
+
+      // Aktualisiere die Daten des Charts mit den Push-Up- und Sit-Up-Werten
+      this.planetChartData.data.datasets[0].data = pushUpsData; // Push-Ups-Daten
+      this.planetChartData.data.datasets[1].data = sitUpsData;  // Sit-Ups-Daten
+
+      // Erstelle den Chart
+      const ctx = document.getElementById("chart").getContext("2d");
+      new Chart(ctx, this.planetChartData); // Chart.js erstellen
+    });
   },
 };
 </script>
+
+
 <template>
   <div id="stat">
     <div class="bottom-navbar">
@@ -69,8 +72,7 @@ export default {
         </ul>
       </nav>
     </div>
-      <canvas id="chart"></canvas>
-    
+    <canvas id="chart"></canvas>
   </div>
 </template>
 
@@ -79,10 +81,9 @@ export default {
 * {
   background-color: rgb(41, 41, 41);
 }
-#chart{
+#chart {
   background-color: #333;
   margin-top: 350px;
-  height: 200px;
 }
 .bottom-navbar {
   position: fixed;

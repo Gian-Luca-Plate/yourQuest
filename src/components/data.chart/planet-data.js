@@ -1,37 +1,35 @@
 export const planetChartData = {
-    type: "bar",
-    data: {
-      labels: ["Push Ups", "Sit Ups", "Squats"], // Exercise labels
-      datasets: [
-        {
-          label: "Number of Exercises OT",
-          type: 'bar',
-          data: [
-            localStorage.getItem("Totalpushup") || 0,  // Fetch push-ups from localStorage
-            localStorage.getItem("Totalsitups") || 0,  // Fetch sit-ups from localStorage
-            localStorage.getItem("Totalsquats") || 0   // Fetch squats from localStorage
-          ],
-          backgroundColor: "rgb(255,255,0)",
-          borderColor: "#c5c0c0",
-          borderWidth: 3
-          
-        }
-      ]
+  type: "line",
+  data: {
+    labels: ["Mo", "Di", "Mi","Do","Fr","Sa","So"],
+    datasets: [
+      {
+        label: "Push Ups",
+        data: [], 
+        borderColor: "#c5c0c0", // Transparente rote Farbe
+        pointStyle: 'circle',
+        pointRadius: 10,
+        pointHoverRadius: 15,
+      },
+      {
+        label: "sit Ups",
+        data: [],
+        borderColor: "rgb(255,255,0)",
+        pointStyle: 'circle',
+        pointRadius: 10,
+        pointHoverRadius: 15,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+      },
     },
-    options: {
-      responsive: true,
-      lineTension: 1,
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-              padding: 2
-            }
-          }
-        ]
-      }
-    }
+  },
 };
 
 export default planetChartData;
