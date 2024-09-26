@@ -11,13 +11,13 @@ export default {
         : 0,
       lastDay: localStorage.getItem("lastDay"),
       currentDay: "",
-      MoSitUps: null, //localStorage.getItem("MopuschUps"),
-      DiSitUps: null, //localStorage.getItem("DipuschUps"),
-      MiSitUps: 200, //localStorage.getItem("MipuschUps"),
-      DoSitUps: 0, //localStorage.getItem("DopuschUps"),
-      FrSitUps: null, //localStorage.getItem("FepuschUps"),
-      SaSitUps: null, //localStorage.getItem("SapuschUps"),
-      SoSitUps: null, //localStorage.getItem("SopuschUps"),
+      MoSitUps: localStorage.getItem("MopuschUps"),
+      DiSitUps: localStorage.getItem("DipuschUps"),
+      MiSitUps: localStorage.getItem("MipuschUps"),
+      DoSitUps: localStorage.getItem("DopuschUps"),
+      FrSitUps: localStorage.getItem("FepuschUps"),
+      SaSitUps: localStorage.getItem("SapuschUps"),
+      SoSitUps: localStorage.getItem("SopuschUps"),
     };
   },
   created() {
@@ -136,7 +136,7 @@ export default {
         this.SitUpValue += 10;
         localStorage.setItem("situps", this.SitUpValue);
         this.cheDaysitups();
-        // Setze die Gesamtanzahl der Sit-Ups für den aktuellen Tag
+        localStorage.setItem("lastDay", this.currentDay)
       } else {
         this.lastDay = this.currentDay;
       }

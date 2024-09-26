@@ -118,6 +118,7 @@ export default {
         this.PushUpValue += 10;
         localStorage.setItem("pushup", this.PushUpValue);
         this.chekDayPuschups();
+        localStorage.setItem("lastDay", this.currentDay)
       } else {
         this.lastDay = this.currentDay;
       }
